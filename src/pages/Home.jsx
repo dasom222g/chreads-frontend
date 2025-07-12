@@ -2,29 +2,52 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/layout/Header";
 import Nav from "../components/layout/Nav";
 import FeedItem from "../components/FeedItem";
-import { initialFeedList, initialTags } from "../data/response";
+import { initialTags } from "../data/response";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 
 const Home = () => {
   // logic
   const history = useNavigate();
+  // API 기본 URL 설정
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-  const [feedList, setFeedList] = useState(initialFeedList);
-  const [userUID, setuserUID] = useState("");
+  const currentUser = auth.currentUser;
+
+  const [feedList, setFeedList] = useState([]);
 
   const handleEdit = (data) => {
-    history("/edit"); // edit페이지로 이동
+    history(`/edit/${data._id}`); // edit페이지로 이동
   };
 
-  // 현재 로그인된 사용자 정보
-  const user = auth.currentUser; // User | null
+  const deletePost = async (id) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/posts/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-  const handleDelete = (selectedItem) => {
-    const filterList = feedList.filter((item) => item.id !== selectedItem.id);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error("게시물 삭제 실패:", error);
+    }
+  };
+
+  const handleDelete = async (selectedItem) => {
+    console.log("🚀 ~ handleDelete ~ selectedItem:", selectedItem);
+    const filterList = feedList.filter((item) => item._id !== selectedItem._id);
     setFeedList(filterList);
 
     // TODO: 백엔드에 Delete 요청
+    const result = await deletePost(selectedItem._id);
+    console.log("🚀 ~ handleDelete ~ result:", result);
   };
 
   const getData = async () => {
@@ -38,19 +61,34 @@ const Home = () => {
   };
 
   useEffect(() => {
-    // 페이지 진입시 유저 고유ID저장
-    user && setuserUID(user.uid);
-  }, [user]);
+    // 페이지 진입시 딱 한번 실행
+    // TODO: 백엔드에 Get 요청
+    // 게시물 목록 가져오기
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/posts`);
 
-  useEffect(() => {
-    console.log("🚀 ~ Home ~ userUID:", userUID);
-  }, [userUID]);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const posts = await response.json();
+        setFeedList(posts);
+        return posts;
+      } catch (error) {
+        console.error("게시물 조회 실패:", error);
+        throw error;
+      }
+    };
+
+    fetchPosts();
+  }, [API_BASE_URL]);
 
   // view
   return (
     <div className="h-full pt-20 pb-[74px] overflow-hidden">
       {/* START: 헤더 영역 */}
-      <Header isLoggedIn={!!user} />
+      <Header isLoggedIn={!!currentUser} />
       {/* END: 헤더 영역 */}
       <main className="h-full overflow-auto">
         {/* TODO */}
@@ -65,10 +103,10 @@ const Home = () => {
           <ul>
             {feedList.map((feed) => (
               <FeedItem
-                key={feed.id}
+                key={feed._id}
                 data={feed}
                 tags={initialTags}
-                isAuthor={feed.userId === userUID}
+                isAuthor={feed.userId === currentUser.uid}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
               />

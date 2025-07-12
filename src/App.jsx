@@ -11,11 +11,15 @@ import { auth } from "./firebase";
 function App() {
   // logic
   const [isLoading, setIsLoading] = useState(true); // 진입시 무조건 로딩
+  const [currentUser, setCurrentUser] = useState(null);
 
   const init = async () => {
     // firebase에서 로그인 데이터 가져오기
     await auth.authStateReady(); // 로그인상태 변화 감지하여 감지가 끝나면 로딩 false
     console.log("인증 완료", auth);
+
+    // 현재 로그인된 사용자 정보
+    setCurrentUser(auth.currentUser);
 
     // 준비된 이후 실행
     setIsLoading(false);
@@ -34,11 +38,14 @@ function App() {
         <div className="max-w-[572px] mx-auto h-full">
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Home currentUser={currentUser} />} />
               <Route path="/login" element={<Login />} />
               <Route path="/sign-up" element={<SignUp />} />
-              <Route path="/post" element={<Post />} />
-              <Route path="/edit" element={<Edit />} />
+              <Route
+                path="/post"
+                element={<Post currentUser={currentUser} />}
+              />
+              <Route path="/edit/:id" element={<Edit />} />
               <Route path="/profile" element={<Profile />} />
             </Routes>
           </BrowserRouter>

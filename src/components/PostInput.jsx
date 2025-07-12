@@ -3,13 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 const PostInput = ({
   defaultValue = "",
   userName = "anonymous",
-  userProfileImage = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+  userProfileImage,
   onChange,
 }) => {
   // logic
   const textareaRef = useRef(null);
 
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState("");
 
   const hanldeChange = (event) => {
     const { value } = event.target;
@@ -17,14 +17,16 @@ const PostInput = ({
     onChange(value);
   };
 
-  // 진입시 딱 한번 실행
   useEffect(() => {
-    console.log("textareaRef", textareaRef);
     textareaRef.current && textareaRef.current.focus();
     const length = value.length;
     textareaRef.current &&
       textareaRef.current.setSelectionRange(length, length);
   }, [value.length]);
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   // view
   return (
@@ -32,7 +34,13 @@ const PostInput = ({
       <div className="flex items-start gap-3">
         {/* START: 프로필 이미지 영역 */}
         <div className="w-10 rounded-full overflow-hidden mt-1">
-          <img src={userProfileImage} alt="사용자 프로필 이미지" />
+          <img
+            src={
+              userProfileImage ||
+              "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+            }
+            alt="사용자 프로필 이미지"
+          />
         </div>
         {/* END: 프로필 이미지 영역 */}
         {/* START: 콘텐츠 영역 */}
