@@ -2,7 +2,7 @@ export const initialFeedList = [
   {
     id: 1,
     userName: "chutzrit",
-    userId: "ViISxUbVTCU381UGn5d0rQwyzZ03",
+    userId: "FHDoIjK0f8gqtnhBExchfnWm1to2",
     userProfileImage: "https://i.ibb.co/JqB4C56/logo3.png",
     churead:
       "우리에겐 실패할 권리가 있습니다. 실패했다는 건 내가 할수 있는 일만 하지않았다는 증거이고 이건 용기있는 사람만이 할수 있거든요.",
@@ -12,7 +12,7 @@ export const initialFeedList = [
     id: 2,
     userName: "chutzrit",
     userProfileImage: "https://i.ibb.co/JqB4C56/logo3.png",
-    userId: "ViISxUbVTCU381UGn5d0rQwyzZ03",
+    userId: "FHDoIjK0f8gqtnhBExchfnWm1to2",
     churead:
       "매일 조금씩 성장하는 자신을 발견하는 것보다 더 큰 성취감은 없습니다. 오늘도 한 걸음 더 나아가세요!",
     likeCount: 45,
@@ -31,7 +31,7 @@ export const initialFeedList = [
     id: 4,
     userName: "chutzrit",
     userProfileImage: "https://i.ibb.co/JqB4C56/logo3.png",
-    userId: "ViISxUbVTCU381UGn5d0rQwyzZ03",
+    userId: "FHDoIjK0f8gqtnhBExchfnWm1to2",
     churead:
       "실패는 성공으로 가는 길에 있는 징검다리일 뿐입니다. 포기하지 말고 계속 나아가세요.",
     likeCount: 52,

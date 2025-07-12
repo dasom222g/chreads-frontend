@@ -2,16 +2,20 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 
-const Header = () => {
+const Header = ({ isLoggedIn }) => {
   // logic
   const history = useNavigate();
 
-  const handleLogout = async () => {
-    console.log("logout");
-    const ok = window.confirm("Are you sure logout");
-    if (!ok) return;
-    // 로그아웃 선택시 로그인페이지로 리다이렉션
-    await auth.signOut();
+  const handleAuth = async () => {
+    if (isLoggedIn) {
+      // 로그아웃 시키기
+      console.log("logout");
+      const ok = window.confirm("Are you sure logout");
+      if (!ok) return;
+      // 로그아웃 선택시 로그인페이지로 리다이렉션
+      await auth.signOut();
+    }
+    // 로그인 페이지로 이동
     history("/login");
   };
 
@@ -24,8 +28,8 @@ const Header = () => {
         </Link>
       </h1>
       <div className="absolute top-1/2 tranform -translate-y-1/2 right-5 rounded-lg bg-white text-churead-black flex items-center px-2 text-sm">
-        <button type="button" onClick={handleLogout}>
-          로그아웃
+        <button type="button" className="p-1" onClick={handleAuth}>
+          {isLoggedIn ? "로그아웃" : "로그인"}
         </button>
       </div>
     </header>

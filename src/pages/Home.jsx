@@ -39,7 +39,7 @@ const Home = () => {
 
   useEffect(() => {
     // 페이지 진입시 유저 고유ID저장
-    setuserUID(user.uid);
+    user && setuserUID(user.uid);
   }, [user]);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const Home = () => {
   return (
     <div className="h-full pt-20 pb-[74px] overflow-hidden">
       {/* START: 헤더 영역 */}
-      <Header />
+      <Header isLoggedIn={!!user} />
       {/* END: 헤더 영역 */}
       <main className="h-full overflow-auto">
         {/* TODO */}
