@@ -5,6 +5,7 @@ import FeedItem from "../components/FeedItem";
 import { initialTags } from "../data/response";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
+import useSSE from "../hooks/useSSE";
 
 const Home = () => {
   // logic
@@ -15,6 +16,9 @@ const Home = () => {
   const currentUser = auth.currentUser;
 
   const [feedList, setFeedList] = useState([]);
+
+  // SSE 연결
+  const { isConnected } = useSSE();
 
   const handleEdit = (data) => {
     history(`/edit/${data._id}`); // edit페이지로 이동
@@ -49,6 +53,12 @@ const Home = () => {
     const result = await deletePost(selectedItem._id);
     console.log("🚀 ~ handleDelete ~ result:", result);
   };
+
+  useEffect(() => {
+    console.log("currentUser", currentUser);
+    // 로그인상태 아니면 로그인페이지로 이동
+    !currentUser && history("/login");
+  });
 
   const getData = async () => {
     // fetch("https://jsonplaceholder.typicode.com/posts")
@@ -101,6 +111,7 @@ const Home = () => {
         <div>
           {/* START: 피드 영역 */}
           <ul>
+            {isConnected ? "✅ 연결됨" : "🔴 연결 끊어짐"}
             {feedList.map((feed) => (
               <FeedItem
                 key={feed._id}
