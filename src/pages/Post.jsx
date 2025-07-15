@@ -8,6 +8,9 @@ const Post = () => {
   const history = useNavigate();
   const currentUser = auth.currentUser;
 
+  // API 기본 URL 설정
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   const [churead, setChuread] = useState("");
 
   const handleChange = (value) => {
@@ -17,7 +20,7 @@ const Post = () => {
   // 새 게시물 작성
   const createPost = async (postData) => {
     try {
-      const response = await fetch("http://localhost:8080/posts", {
+      const response = await fetch(`${API_BASE_URL}/posts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
