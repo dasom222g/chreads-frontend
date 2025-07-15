@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { RiHeartFill, RiHeartLine, RiPencilFill } from "react-icons/ri";
 import { FaTrash } from "react-icons/fa6";
 
