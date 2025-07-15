@@ -54,6 +54,35 @@ const Home = () => {
     console.log("🚀 ~ handleDelete ~ result:", result);
   };
 
+  const handleLike = async (id) => {
+    // TODO: 백엔드에 Put요청
+    try {
+      const response = await fetch(`${API_BASE_URL}/posts/${id}/like`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId: currentUser.uid }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (result.action === 'liked') {
+        // 좋아요 한 경우
+        setFeedList(prev => prev.map(feed => feed._id === id ? { ...feed, likeCount: result.likeCount, likedUsers: [...feed.likedUsers, currentUser.uid] } : { ...feed }))
+        return
+      }
+      // 좋아요 취소한 경우
+      setFeedList(prev => prev.map(feed => feed._id === id ? { ...feed, likeCount: result.likeCount, likedUsers: feed.likedUsers.filter(userId => userId !== currentUser.uid) } : { ...feed }))
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   useEffect(() => {
     console.log("currentUser", currentUser);
     // 로그인상태 아니면 로그인페이지로 이동
@@ -94,6 +123,11 @@ const Home = () => {
     fetchPosts();
   }, [API_BASE_URL]);
 
+  useEffect(() => {
+
+    console.log("🚀 ~ Home ~ feedList:", feedList)
+  }, [feedList])
+
   // view
   return (
     <div className="h-full pt-20 pb-[74px] overflow-hidden">
@@ -118,8 +152,10 @@ const Home = () => {
                 data={feed}
                 tags={initialTags}
                 isAuthor={feed.userId === currentUser.uid}
+                currentUserId={currentUser.uid}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
+                onLike={handleLike}
               />
             ))}
           </ul>
