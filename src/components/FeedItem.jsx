@@ -15,12 +15,6 @@ const FeedItem = ({ data, tags, isAuthor, currentUserId, onEdit, onDelete, onLik
     }
   };
 
-  useEffect(() => {
-    console.log("data.likedUsers", data.likedUsers)
-    console.log("currentUserId", currentUserId)
-
-  }, [])
-
 
   // view
   return (
