@@ -5,7 +5,7 @@ import FeedItem from "../components/FeedItem";
 import { initialTags } from "../data/response";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
-// import useSSE from "../hooks/useSSE";
+import useSSE from "../hooks/useSSE";
 
 const Home = () => {
   // logic
@@ -18,7 +18,7 @@ const Home = () => {
   const [feedList, setFeedList] = useState([]);
 
   // SSE 연결
-  // const { isConnected } = useSSE();
+  const { isConnected } = useSSE();
 
   const handleEdit = (data) => {
     history(`/edit/${data._id}`); // edit페이지로 이동
@@ -110,8 +110,8 @@ const Home = () => {
 
         <div>
           {/* START: 피드 영역 */}
+          <span className="block p-2 text-right text-sm">{isConnected ? "✅" : "🔴"}</span>
           <ul>
-            {/* {isConnected ? "✅ 연결됨" : "🔴 연결 끊어짐"} */}
             {feedList.map((feed) => (
               <FeedItem
                 key={feed._id}
