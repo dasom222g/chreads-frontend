@@ -16,8 +16,7 @@ const useSSE = () => {
 
   useEffect(() => {
     // SSE 연결 생성
-    const API_BASE_URL =
-      process.env.REACT_APP_API_BASE_URL || "http://localhost:8080";
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const eventSource = new EventSource(`${API_BASE_URL}/events`);
     eventSourceRef.current = eventSource;
 

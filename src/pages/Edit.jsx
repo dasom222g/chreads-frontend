@@ -7,8 +7,7 @@ const Edit = () => {
   const { id } = useParams();
   const history = useNavigate();
   // API 기본 URL 설정
-  const API_BASE_URL =
-    process.env.REACT_APP_API_BASE_URL || "http://localhost:8080";
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const [feedItem, setFeedItem] = useState(null);
   const [value, setValue] = useState("");
