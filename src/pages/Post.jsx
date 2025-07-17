@@ -67,7 +67,6 @@ const Post = () => {
       userId: currentUser.uid,
       userProfileImage: photoURL,
       content: resultChuread,
-      tags: [],
     };
 
     const result = await createPost(newItem);

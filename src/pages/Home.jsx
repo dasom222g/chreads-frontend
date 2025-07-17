@@ -44,16 +44,18 @@ const Home = () => {
     }
   };
 
+  // DELETE /posts/:id - 특정 게시물 삭제
   const handleDelete = async (selectedItem) => {
-    console.log("🚀 ~ handleDelete ~ selectedItem:", selectedItem);
-    const filterList = feedList.filter((item) => item._id !== selectedItem._id);
-    setFeedList(filterList);
-
     // TODO: 백엔드에 Delete 요청
     const result = await deletePost(selectedItem._id);
     console.log("🚀 ~ handleDelete ~ result:", result);
+
+    // UI 업데이트
+    const filterList = feedList.filter((item) => item._id !== selectedItem._id);
+    setFeedList(filterList);
   };
 
+  // PUT /posts/:id/like - 게시물 좋아요 토글
   const handleLike = async (id) => {
     // TODO: 백엔드에 Put요청
     try {
@@ -102,7 +104,7 @@ const Home = () => {
   useEffect(() => {
     // 페이지 진입시 딱 한번 실행
     // TODO: 백엔드에 Get 요청
-    // 게시물 목록 가져오기
+    // GET /posts - 모든 게시물 조회
     const fetchPosts = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/posts`);

@@ -40,6 +40,7 @@ const Edit = () => {
     }
   };
 
+  // PUT /posts/:id - 특정 게시물 수정
   const handleEdit = async (event) => {
     event.preventDefault(); // 폼 제출시 새로고침 방지 메소드
 
@@ -53,11 +54,11 @@ const Edit = () => {
       : alert("게시물이 제대로 수정되지 않았습니다");
   };
 
+  // GET /posts/:id - 특정 게시물 조회
   useEffect(() => {
     // 페이지 진입시 딱 한번 실행
     // TODO: 백엔드에 Get 요청
     console.log("id", id);
-
     const fetchPost = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/posts/${id}`);
